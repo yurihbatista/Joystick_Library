@@ -17,14 +17,13 @@ class Joystick
         int pinNumber;
 
     public:
-        Joystick(int cpin_X, int cpin_Y, int cbutton); //construtor da classe
+        Joystick(int cpin_X, int cpin_Y, int cbutton); 
+        Joystick(int cpin_X, int cbutton);
 
         /*Os métodos abaixo retornam as inclinações dos joysticks, em porcentagem valores de -100 a 100,
         onde -100 o Joystick está totalmente inclinado pra esquerda (quando na direção X) ou para cima (quando na direção Y)
         e 100 indica que o Joystick está totalmente inclinado para a direita (quando na direção X) ou para baixo, (quando
         na direção Y). Zero indica que o Joystick está centralizado, a menos da deadzone */
-
-        Joystick(int cpin_X, int cbutton);
         
         bool get_button(); //retorna o acionamento do botão sob o joystick
 
