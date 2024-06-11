@@ -26,13 +26,11 @@ Joystick::Joystick(int cpin_X, int cbutton):
 }
 
 int Joystick::get_X(){
-    delay(pressDelayX());
     this->X = (abs(((analogRead(pin_X))/20.475)-100)<DEAD_ZONE)? 0 : (((analogRead(pin_X))/20.475)-100);
     return this->X;
 }
 
 int Joystick::get_Y(){
-    delay(pressDelayY());
     switch(pinNumber){
         case 3:
             this->Y = (abs(((analogRead(pin_Y))/20.475)-100)<DEAD_ZONE)? 0 : (((analogRead(pin_Y))/20.475)-100);
@@ -86,7 +84,8 @@ bool Joystick::X_asButtonLeft(){
 
 
 
-bool Joystick::Y_asButtonUpDebounced(){    
+bool Joystick::Y_asButtonUpDebounced(){ 
+    delay(pressDelayY());
     int buttonState;
     int lastButtonState = false;
     bool output = false;
@@ -114,6 +113,7 @@ bool Joystick::Y_asButtonUpDebounced(){
 }
 
 bool Joystick::Y_asButtonDownDebounced(){
+    delay(pressDelayY());
     int buttonState;
     int lastButtonState = false;
     bool output = false;
@@ -141,6 +141,7 @@ bool Joystick::Y_asButtonDownDebounced(){
 }
 
 bool Joystick::X_asButtonRightDebounced(){
+    delay(pressDelayX());
     int buttonState;
     int lastButtonState = false;
     bool output = false;
@@ -168,6 +169,7 @@ bool Joystick::X_asButtonRightDebounced(){
 }
 
 bool Joystick::X_asButtonLeftDebounced(){
+    delay(pressDelayX());
     int buttonState;
     int lastButtonState = false;
     bool output = false;
