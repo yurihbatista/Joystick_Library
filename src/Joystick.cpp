@@ -6,6 +6,11 @@ Joystick::Joystick(int cpin_X, int cpin_Y, int cbutton):
         pinMode(pin_X,INPUT);
         pinMode(pin_Y,INPUT);
         pinMode(button,INPUT_PULLUP);
+        lastPressTime = 0;
+        last_X = 0;
+        last_Y = 0;
+        pressCountX = 0;
+        pressCountY = 0;
 }
 
 Joystick::Joystick(int cpin_X, int cbutton): 
@@ -13,14 +18,21 @@ Joystick::Joystick(int cpin_X, int cbutton):
         pinMode(pin_X,INPUT);
         pinMode(button,INPUT_PULLUP);
         pinNumber = 2;
+        lastPressTime = 0;
+        last_X = 0;
+        last_Y = 0;
+        pressCountX = 0;
+        pressCountY = 0;
 }
 
 int Joystick::get_X(){
+    delay(pressDelayX());
     this->X = (abs(((analogRead(pin_X))/20.475)-100)<DEAD_ZONE)? 0 : (((analogRead(pin_X))/20.475)-100);
     return this->X;
 }
 
 int Joystick::get_Y(){
+    delay(pressDelayY());
     switch(pinNumber){
         case 3:
             this->Y = (abs(((analogRead(pin_Y))/20.475)-100)<DEAD_ZONE)? 0 : (((analogRead(pin_Y))/20.475)-100);
@@ -180,4 +192,42 @@ bool Joystick::X_asButtonLeftDebounced(){
 
   lastButtonState = reading;
   return output;    
+}
+
+unsigned Joystick::pressDelayX(){
+    if((abs(last_X-get_X())<10) && ((millis() - lastPressTime)>PRESS_RESET_DELAY_TIME && pressCountX == 0)){
+        pressCountX++;
+        lastPressTime = millis() + INITIAL_PRESS_DELAY;
+        return 1;
+    }
+
+    if((abs(last_X-get_X())<10) && ((millis() - lastPressTime<PRESS_RESET_DELAY_TIME && pressCountX == 1))){
+        pressCountX++;
+        lastPressTime = millis() + INITIAL_PRESS_DELAY;
+        return INITIAL_PRESS_DELAY;
+    }
+    else{
+        pressCountX = 0;
+        lastPressTime = millis() + 1;
+        return 1;
+    }
+}
+
+unsigned Joystick::pressDelayY(){
+    if((abs(last_Y-get_Y())<DELAY_DEAD_ZONE) && ((millis() - lastPressTime)>PRESS_RESET_DELAY_TIME && pressCountY == 0)){
+        pressCountY++;
+        lastPressTime = millis() + INITIAL_PRESS_DELAY;
+        return 1;
+    }
+
+    if((abs(last_Y-get_Y())<DELAY_DEAD_ZONE) && ((millis() - lastPressTime<PRESS_RESET_DELAY_TIME && pressCountY == 1))){
+        pressCountY++;
+        lastPressTime = millis() + INITIAL_PRESS_DELAY;
+        return INITIAL_PRESS_DELAY;
+    }
+    else{
+        pressCountY = 0;
+        lastPressTime = millis() + 1;
+        return 1;
+    }
 }

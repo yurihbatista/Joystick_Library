@@ -6,6 +6,7 @@
 #define DEBOUNCE_DELAY 100
 #define INITIAL_PRESS_DELAY 1000
 #define PRESS_RESET_DELAY_TIME 1500
+#define DELAY_DEAD_ZONE 10
 
 //Essa classe modela um dispositivo real do tipo joystick. Ela lê as entradas analógicas passadas pelo dispositivo e faz a conversões necessárias para repassar a inclinação dele e o pressionar do botão.
 
@@ -15,6 +16,11 @@ class Joystick
         int pin_X, pin_Y, button; //pinos do joystick (funciona como dois potenciômetros e um botão)
         int X, Y; //Inclinação do joystick
         int pinNumber;
+        unsigned long lastPressTime;
+        unsigned pressDelayX();
+        unsigned pressDelayY();
+        int last_X, last_Y;
+        int pressCountX, pressCountY;
 
     public:
         Joystick(int cpin_X, int cpin_Y, int cbutton); 
