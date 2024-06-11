@@ -6,7 +6,6 @@ Joystick::Joystick(int cpin_X, int cpin_Y, int cbutton):
         pinMode(pin_X,INPUT);
         pinMode(pin_Y,INPUT);
         pinMode(button,INPUT_PULLUP);
-        pinNumber = 3;
 }
 
 Joystick::Joystick(int cpin_X, int cbutton): 
@@ -127,7 +126,6 @@ bool Joystick::Y_asButtonDownDebounced(){
 
   lastButtonState = reading;
   return output;
-
 }
 
 bool Joystick::X_asButtonRightDebounced(){
@@ -155,7 +153,6 @@ bool Joystick::X_asButtonRightDebounced(){
 
   lastButtonState = reading;
   return output;
-
 }
 
 bool Joystick::X_asButtonLeftDebounced(){
@@ -182,6 +179,5 @@ bool Joystick::X_asButtonLeftDebounced(){
     }
 
   lastButtonState = reading;
-  return output;
-    
+  return output;    
 }
