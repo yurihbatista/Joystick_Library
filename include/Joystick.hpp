@@ -3,7 +3,7 @@
 #ifndef JOYSTICK_
 #define JOYSTICK_
 #define DEAD_ZONE 10 // O valor mínimo de inclinação do joystick até que ele retorne o primeiro valor
-#define DEBOUNCE_DELAY 50
+#define DEBOUNCE_DELAY 100
 
 //Essa classe modela um dispositivo real do tipo joystick. Ela lê as entradas analógicas passadas pelo dispositivo e faz a conversões necessárias para repassar a inclinação dele e o pressionar do botão.
 
@@ -11,7 +11,7 @@ class Joystick
 {
     private:
         int pin_X, pin_Y, button; //pinos do joystick (funciona como dois potenciômetros e um botão)
-        int X, Y; //Inclinação do joystick
+        int X, Y, pinNumber; //Inclinação do joystick
 
     public:
         Joystick(int cpin_X, int cpin_Y, int cbutton); //construtor da classe
@@ -20,6 +20,8 @@ class Joystick
         onde -100 o Joystick está totalmente inclinado pra esquerda (quando na direção X) ou para cima (quando na direção Y)
         e 100 indica que o Joystick está totalmente inclinado para a direita (quando na direção X) ou para baixo, (quando
         na direção Y). Zero indica que o Joystick está centralizado, a menos da deadzone */
+
+        Joystick(int cpin_X, int cbutton);
         
         bool get_button(); //retorna o acionamento do botão sob o joystick
 

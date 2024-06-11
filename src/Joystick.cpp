@@ -6,6 +6,14 @@ Joystick::Joystick(int cpin_X, int cpin_Y, int cbutton):
         pinMode(pin_X,INPUT);
         pinMode(pin_Y,INPUT);
         pinMode(button,INPUT_PULLUP);
+        pinNumber = 3;
+}
+
+Joystick::Joystick(int cpin_X, int cbutton): 
+    pin_X(cpin_X), button(cbutton){
+        pinMode(pin_X,INPUT);
+        pinMode(button,INPUT_PULLUP);
+        pinNumber = 2;
 }
 
 int Joystick::get_X(){
@@ -14,8 +22,15 @@ int Joystick::get_X(){
 }
 
 int Joystick::get_Y(){
-    this->Y = (abs(((analogRead(pin_Y))/20.475)-100)<DEAD_ZONE)? 0 : (((analogRead(pin_Y))/20.475)-100);
-    return this->Y;
+    switch(pinNumber){
+        case 3:
+            this->Y = (abs(((analogRead(pin_Y))/20.475)-100)<DEAD_ZONE)? 0 : (((analogRead(pin_Y))/20.475)-100);
+            return this->Y;
+            break;            
+        case 2:
+            return 0;
+            break;
+    }
 }
 
 bool Joystick::get_button(){
@@ -66,7 +81,7 @@ bool Joystick::Y_asButtonUpDebounced(){
     bool output = false;
 
     unsigned long lastDebounceTime = 0;
-    unsigned long debounceDelay = DEBOUNCE_DELAY;
+    unsigned long debounceDelay = 10 + (DEBOUNCE_DELAY-(DEBOUNCE_DELAY*(get_Y()/100)));
 
     int reading = Y_asButtonUp();
 
@@ -93,7 +108,7 @@ bool Joystick::Y_asButtonDownDebounced(){
     bool output = false;
 
     unsigned long lastDebounceTime = 0;
-    unsigned long debounceDelay = DEBOUNCE_DELAY;
+    unsigned long debounceDelay = 10 + (DEBOUNCE_DELAY-(DEBOUNCE_DELAY*(get_Y()/100)));
 
     int reading = Y_asButtonDown();
 
@@ -121,7 +136,7 @@ bool Joystick::X_asButtonRightDebounced(){
     bool output = false;
 
     unsigned long lastDebounceTime = 0;
-    unsigned long debounceDelay = DEBOUNCE_DELAY;
+    unsigned long debounceDelay = 10 + (DEBOUNCE_DELAY-(DEBOUNCE_DELAY*(get_X()/100)));
 
     int reading = X_asButtonRight();
 
@@ -149,7 +164,7 @@ bool Joystick::X_asButtonLeftDebounced(){
     bool output = false;
 
     unsigned long lastDebounceTime = 0;
-    unsigned long debounceDelay = DEBOUNCE_DELAY;
+    unsigned long debounceDelay = 10 + (DEBOUNCE_DELAY-(DEBOUNCE_DELAY*(get_X()/100)));
 
     int reading = X_asButtonLeft();
 
